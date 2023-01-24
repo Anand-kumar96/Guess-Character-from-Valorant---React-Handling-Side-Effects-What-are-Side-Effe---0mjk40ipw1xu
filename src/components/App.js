@@ -129,39 +129,50 @@ const App = () => {
   const [score, setScore] = useState(0);
 
   const changeChar = () => {
-    
-  };
+    const random =Math.floor(Math.random()*19);
+    const random2= Math.floor(Math.random()*19);
+    const random3= Math.floor(Math.random()*19);
+    const random4= Math.floor(Math.random()*19);
 
+
+    const characterObj= {
+       name :characters[random].name,
+       role: characters[random].role,
+       abilities: characters[random].abilities,
+         options:[characters[random],characters[random2],characters[random3],characters[random4]]
+    }
+    console.log(characterObj);
+   setCurrChar(characterObj);
+  };
   const scoreHandler = (e) => {
-   if(e.target.textContent === currChar.name){
-    setScore(s => s+1);
-   }
-   else setScore(s => s-1);
+    e.persist();
+    console.log( e._targetInst.key);
+    
+    if( e._targetInst.key ==0){
+      setScore(score + 1);
+    }
+    else{
+      setScore(score -1);
+    }
+    changeChar();
   };
 
   useEffect(() => {
-    let ind =Math.floor(Math.random()*19);
-    let curr = characters[ind];
-    console.log(curr);
-    let op = [curr];
-    let i = 0;
-    for(let chars of characters.slice().sort(()=>Math.random()-0.5)){
-      if(i===3) break;
-      if(chars !== curr) {
-        op.push(chars);
-        i++;
-      }
+    const random =Math.floor(Math.random()*19);
+    const random2= Math.floor(Math.random()*19);
+    const random3= Math.floor(Math.random()*19);
+    const random4= Math.floor(Math.random()*19);
+    
+    const characterObj= {
+       name :characters[random].name,
+       role: characters[random].role,
+       abilities: characters[random].abilities,
+      
+         options:[characters[random],characters[random2],characters[random3],characters[random4]]
     }
-
-    op.sort(()=>Math.random()-0.5);
-
-   setCurrChar({
-    name : curr.name,
-    role : curr.role,
-    abilities : curr.abilities,
-    options : op,
-   })
-  },[score]);
+    console.log(characterObj);
+   setCurrChar(characterObj);
+  },[]);
   return (
     <div id="main">
       <div className="container">
@@ -172,8 +183,8 @@ const App = () => {
           <h4>Role: {currChar.role}</h4>
           {currChar.abilities.join()}
           <div className="options">
-            {currChar.options.map((option) => (
-              <button  key={option.name} onClick={scoreHandler}>
+            {currChar.options.map((option,index) => (
+              <button   onClick={(event)=>(scoreHandler(event))} key={index} >
                 {option.name}
               </button>
             ))}
